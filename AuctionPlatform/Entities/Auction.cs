@@ -24,6 +24,7 @@ namespace AuctionPlatform.Entities
 
         #region Models
         public Category Category { get; set; }
+        public User User { get; set; }
         #endregion Models
     }
 }
