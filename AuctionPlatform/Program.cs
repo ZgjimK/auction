@@ -1,4 +1,9 @@
 
+using AuctionPlatform.Data;
+using AuctionPlatform.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace AuctionPlatform
 {
     public class Program
@@ -12,6 +17,13 @@ namespace AuctionPlatform
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddDbContext<AuctionPlatformDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddIdentity<User, IdentityRole<int>>()
+                            .AddEntityFrameworkStores<AuctionPlatformDbContext>()
+                            .AddDefaultTokenProviders();
 
             var app = builder.Build();
 
