@@ -1,4 +1,4 @@
-namespace AuctionPlatform.Enums
+namespace AuctionPlatform.Enums;
 
 public enum BidStatus {
     Active = 1,

@@ -22,9 +22,13 @@ namespace AuctionPlatform.Entities
 
         #endregion Properties
 
-        #region Models
+        #region Entity-Models
+
+        public ICollection  <Bid> Bids { get; set; } = new List<Bid>();
+        public ICollection<WatchlistItem> WatchlistItems { get; set; } = new List<WatchlistItem>();
         public Category Category { get; set; }
         public User User { get; set; }
-        #endregion Models
+
+        #endregion Entity-Models
     }
 }
