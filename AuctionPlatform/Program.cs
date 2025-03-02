@@ -1,6 +1,8 @@
 
 using AuctionPlatform.Data;
 using AuctionPlatform.Entities;
+using AuctionPlatform.Services.Implementations;
+using AuctionPlatform.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +26,8 @@ namespace AuctionPlatform
             builder.Services.AddIdentity<User, IdentityRole<int>>()
                             .AddEntityFrameworkStores<AuctionPlatformDbContext>()
                             .AddDefaultTokenProviders();
+
+            builder.Services.AddScoped<IAuctionService, AuctionService>();
 
             var app = builder.Build();
 
