@@ -5,6 +5,7 @@ namespace AuctionPlatform.Entities
     public class Bid : BaseEntity
     {
         #region Properties
+
         public decimal Amount { get; set; }
         public decimal Timestamp { get; set; }
         public BidStatus Status { get; set; }
@@ -22,6 +23,7 @@ namespace AuctionPlatform.Entities
         #region Entity-Models
         public User User { get; set; }
         public Auction Auction { get; set; }
+
         #endregion Entity-Models
     }
 }

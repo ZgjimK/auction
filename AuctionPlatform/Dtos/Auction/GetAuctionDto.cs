@@ -1,6 +1,6 @@
 ﻿using AuctionPlatform.Enums;
 
-namespace AuctionPlatform.Dtos
+namespace AuctionPlatform.Dtos.Auction
 {
     public class GetAuctionDto
     {
