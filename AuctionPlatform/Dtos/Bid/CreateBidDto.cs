@@ -1,11 +1,9 @@
 ﻿using AuctionPlatform.Enums;
 
-namespace AuctionPlatform.Entities
+namespace AuctionPlatform.Dtos.Bid
 {
-    public class Bid : BaseEntity
+    public class CreateBidDto
     {
-        #region Properties
-
         public decimal Amount { get; set; }
         public BidStatus Status { get; set; }
         public int UserId { get; set; }
@@ -16,13 +14,5 @@ namespace AuctionPlatform.Entities
         public DateTime ChangedOn { get; set; }
         public string CreatedBy { get; set; }
         public string ChangedBy { get; set; }
-
-        #endregion Properties
-
-        #region Entity-Models
-        public User User { get; set; }
-        public Auction Auction { get; set; }
-
-        #endregion Entity-Models
     }
 }
