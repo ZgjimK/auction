@@ -73,18 +73,18 @@ namespace AuctionPlatform.Services.Implementations
             {
 
                 var createBid = await _context.Bids.AddAsync(new Bid
-                                                                     {
-                                                                         Amount = bid.Amount,
-                                                                         UserId = bid.UserId,
-                                                                         AuctionId = bid.AuctionId,
-                                                                         Status = bid.Status,
-                                                                         StartTime = bid.StartTime,
-                                                                         EndTime = bid.EndTime,
-                                                                         CreatedOn = bid.CreatedOn,
-                                                                         ChangedOn = bid.ChangedOn,
-                                                                         CreatedBy = bid.CreatedBy,
-                                                                         ChangedBy = bid.ChangedBy,
-                                                                     }, cancellationToken
+                {
+                    Amount = bid.Amount,
+                    UserId = bid.UserId,
+                    AuctionId = bid.AuctionId,
+                    Status = bid.Status,
+                    StartTime = bid.StartTime,
+                    EndTime = bid.EndTime,
+                    CreatedOn = bid.CreatedOn,
+                    ChangedOn = bid.ChangedOn,
+                    CreatedBy = bid.CreatedBy,
+                    ChangedBy = bid.ChangedBy,
+                }, cancellationToken
                                                             );
 
                 if (await _context.SaveChangesAsync(cancellationToken) > 0)
@@ -98,7 +98,8 @@ namespace AuctionPlatform.Services.Implementations
                                                        },
                                                        statusCode: HttpStatusCode.OK
                                                      );
-                } else
+                }
+                else
                 {
                     return new ApiResponse<GetBidDto>(
                                                        errorMessage: "An error occurred while creating the bid.",
@@ -117,5 +118,45 @@ namespace AuctionPlatform.Services.Implementations
         }
 
         #endregion Create-Bid
+
+        #region Delete-Bid
+
+        public async Task<ApiResponse<bool>> DeleteAsync(int bidId, CancellationToken cancellationToken)
+        {
+            try
+            {
+
+                var getBidById = await _context.Bids.FindAsync(bidId, cancellationToken);
+
+                if (getBidById is null)
+                    return new ApiResponse<bool>(
+                                                  errorMessage: "An error occurred while creating the bid.",
+                                                  statusCode: HttpStatusCode.InternalServerError
+                                                );
+
+                _context.Remove(getBidById);
+
+                if (await _context.SaveChangesAsync(cancellationToken) > 0)
+                    return new ApiResponse<bool>(
+                                                  data: true,
+                                                  statusCode: HttpStatusCode.OK
+                                                );
+                else
+                    return new ApiResponse<bool>(
+                                                  errorMessage: "An error occurred while creating the bid.",
+                                                  statusCode: HttpStatusCode.InternalServerError
+                                                );
+
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse<bool>(
+                                              errorMessage: "An error occurred while creating the bid.",
+                                              statusCode: HttpStatusCode.InternalServerError
+                                            );
+            }
+        }
+
+        #endregion Delete-Bid
     }
 }

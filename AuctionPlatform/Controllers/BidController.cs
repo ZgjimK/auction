@@ -73,6 +73,24 @@ namespace AuctionPlatform.Controllers
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromRoute] int bidId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var response = await _bidService.DeleteAsync(bidId, cancellationToken);
+
+                if (response.Success)
+                    return Ok(response);
+
+                return BadRequest(response);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An unexpected error occurred while processing the request.");
+            }
+        }
+
         #endregion Endpoints
     }
 }
