@@ -65,6 +65,44 @@ namespace AuctionPlatform.Services.Implementations
 
         #endregion Get-BidsById
 
+        #region Get-CurrentUserByAuctionId
+
+        public async Task<ApiResponse<IReadOnlyCollection<GetBidDto>>> GetCurrentUserByAuctionId(int auctionId, CancellationToken cancellationToken)
+        {
+            try
+            {
+
+                int userId = 0;
+
+                var userBids = await _context.Bids
+                                         .OrderBy(x => x.CreatedOn)
+                                         .Where(x => x.AuctionId == auctionId && x.UserId == userId)
+                                         .Select(a => new GetBidDto
+                                         {
+                                             Amount = a.Amount,
+                                             FullName = a.User.UserName,
+                                             CreatedOn = a.CreatedOn
+                                         })
+                                         .ToListAsync(cancellationToken);
+
+                return new ApiResponse<IReadOnlyCollection<GetBidDto>>(
+                                                                        data: userBids.AsReadOnly(),
+                                                                        statusCode: HttpStatusCode.OK
+                                                                      );
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse<IReadOnlyCollection<GetBidDto>>(
+                                                                        errorMessage: "An error occurred while retrieving auctions.",
+                                                                        statusCode: HttpStatusCode.InternalServerError
+                                                                      );
+            }
+
+
+        }
+
+        #endregion Get-CurrentUserByAuctionId
+
         #region Create-Bid
 
         public async Task<ApiResponse<GetBidDto>> CreateBid(CreateBidDto bid, CancellationToken cancellationToken)
