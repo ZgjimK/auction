@@ -1,4 +1,7 @@
 ﻿using AuctionPlatform.Data;
+using AuctionPlatform.Dtos.Bid;
+using AuctionPlatform.Dtos.Watchlist;
+using AuctionPlatform.Services.Implementations;
 using AuctionPlatform.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +42,24 @@ namespace AuctionPlatform.Controllers
             try
             {
                 var response = await _auctionService.GetAllAuctionAsync(cancellationToken);
+
+                if (response.Success)
+                    return Ok(response);
+
+                return BadRequest(response);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An unexpected error occurred while processing the request.");
+            }
+        }
+
+        [HttpPost("CreateWatchlistItem")]
+        public async Task<IActionResult> CreateWatchlistItem([FromBody] CreateWatchlistDto watchlist, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var response = await _auctionService.CreateAuctionWatchlistItemAsync(watchlist, cancellationToken);
 
                 if (response.Success)
                     return Ok(response);
