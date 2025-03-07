@@ -1,5 +1,7 @@
 ﻿using AuctionPlatform.Data;
 using AuctionPlatform.Dtos.Auction;
+using AuctionPlatform.Dtos.Watchlist;
+using AuctionPlatform.Entities;
 using AuctionPlatform.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -60,6 +62,48 @@ namespace AuctionPlatform.Services.Implementations
         }
 
         #endregion Get-AllAuctionAsync
+
+        #region CreateAuctionWatchlistItem
+
+        public async Task<ApiResponse<bool>> CreateAuctionWatchlistItemAsync(CreateWatchlistDto watchlistDto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var auctions = await _context.WatchlistItems
+                                             .AddAsync(new WatchlistItem
+                                             {
+                                                 UserId = watchlistDto.UserId,
+                                                 AuctionId = watchlistDto.AuctionId
+                                             }, cancellationToken);
+
+                if (await _context.SaveChangesAsync(cancellationToken) > 0)
+                {
+
+
+                    return new ApiResponse<bool>(
+                                                  data: true,
+                                                  statusCode: HttpStatusCode.OK
+                                                );
+
+                }
+                else
+                {
+                    return new ApiResponse<bool>(
+                                                  errorMessage: "An error occurred while creating watchlist.",
+                                                  statusCode: HttpStatusCode.ExpectationFailed
+                                                );
+                }
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse<bool>(
+                                              errorMessage: "An error occurred while retrieving auctions.",
+                                              statusCode: HttpStatusCode.InternalServerError
+                                            );
+            }
+        }
+
+        #endregion CreateAuctionWatchlistItem
 
     }
 }
