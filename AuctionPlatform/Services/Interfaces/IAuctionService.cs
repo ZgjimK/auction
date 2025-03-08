@@ -7,7 +7,7 @@ namespace AuctionPlatform.Services.Interfaces
     public interface IAuctionService
     {
         Task<ApiResponse<IReadOnlyCollection<GetAuctionDto>>> GetAllAuctionAsync(CancellationToken cancellationToken);
-
         Task<ApiResponse<bool>> CreateAuctionWatchlistItemAsync(CreateWatchlistDto watchlistDto, CancellationToken cancellationToken);
+        Task<ApiResponse<bool>> DeleteAuctionWatchlistItemAsync(int id, CancellationToken cancellationToken);
     }
 }

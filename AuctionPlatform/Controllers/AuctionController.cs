@@ -72,6 +72,24 @@ namespace AuctionPlatform.Controllers
             }
         }
 
+        [HttpDelete("DeleteWatchlistItem/{id:int}")]
+        public async Task<IActionResult> DeleteWatchlistItem([FromQuery] int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var response = await _auctionService.DeleteAuctionWatchlistItemAsync(id, cancellationToken);
+
+                if (response.Success)
+                    return Ok(response);
+
+                return BadRequest(response);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An unexpected error occurred while processing the request.");
+            }
+        }
+
         #endregion Endpoints
     }
 

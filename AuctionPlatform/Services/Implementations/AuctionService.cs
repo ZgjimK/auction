@@ -63,7 +63,7 @@ namespace AuctionPlatform.Services.Implementations
 
         #endregion Get-AllAuctionAsync
 
-        #region CreateAuctionWatchlistItem
+        #region Create-AuctionWatchlistItem
 
         public async Task<ApiResponse<bool>> CreateAuctionWatchlistItemAsync(CreateWatchlistDto watchlistDto, CancellationToken cancellationToken)
         {
@@ -103,7 +103,47 @@ namespace AuctionPlatform.Services.Implementations
             }
         }
 
-        #endregion CreateAuctionWatchlistItem
+        #endregion Create-AuctionWatchlistItem
+
+        #region Delete-AuctionWatchlistItem
+
+        public async Task<ApiResponse<bool>> DeleteAuctionWatchlistItemAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+
+                var watchlistItem = await _context.WatchlistItems
+                                                  .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+                var auctions = _context.WatchlistItems
+                                       .Remove(watchlistItem);
+
+                if (await _context.SaveChangesAsync(cancellationToken) > 0)
+                {
+                    return new ApiResponse<bool>(
+                                                  data: true,
+                                                  statusCode: HttpStatusCode.OK
+                                                );
+
+                }
+                else
+                {
+                    return new ApiResponse<bool>(
+                                                  errorMessage: "An error occurred while creating watchlist.",
+                                                  statusCode: HttpStatusCode.ExpectationFailed
+                                                );
+                }
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse<bool>(
+                                              errorMessage: "An error occurred while retrieving auctions.",
+                                              statusCode: HttpStatusCode.InternalServerError
+                                            );
+            }
+        }
+
+        #endregion Delete-AuctionWatchlistItem
 
     }
 }
