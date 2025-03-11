@@ -37,7 +37,7 @@ namespace AuctionPlatform.Services.Implementations
             {
                 var auctions = await _context.Bids
                                              .Include(x => x.User)
-                                             .OrderBy(x => x.CreatedOn)
+                                             .OrderByDescending(x => x.CreatedOn)
                                              .Where(x => x.AuctionId == auctionId)
                                              .Select(a => new GetBidDto
                                              {
