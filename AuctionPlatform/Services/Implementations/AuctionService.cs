@@ -113,7 +113,7 @@ namespace AuctionPlatform.Services.Implementations
             {
 
                 var watchlistItem = await _context.WatchlistItems
-                                                  .FindAsync(id, cancellationToken);
+                                                  .FirstOrDefaultAsync(id, cancellationToken);
 
                 var auctions = _context.WatchlistItems
                                        .Remove(watchlistItem);
